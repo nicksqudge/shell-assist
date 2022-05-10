@@ -2,7 +2,7 @@ using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
 
-namespace ShellAssist.Commands;
+namespace ShellAssist.Commands.Diagnostics;
 
 [Command("diagnostics", Description = "Run diagnostics on your installation")]
 public class DiagnosticsCommand : ICommand
@@ -12,24 +12,21 @@ public class DiagnosticsCommand : ICommand
 
     public DiagnosticsCommand(IDiagnosticsCommandOutput output, IOperatingSystem os)
     {
-        this._output = output;
-        this._os = os;
+        _output = output;
+        _os = os;
     }
 
     public ValueTask ExecuteAsync(IConsole console)
     {
         var shellConfig = _os.GetConfig();
-        if (shellConfig.Exists)
+        if (shellConfig.Exists == false)
+        {
             _output.ConfigExists();
-        else
-            _output.ConfigDoesNotExist();
+            return ValueTask.FromException;
+        }
+        
+        _output.ConfigDoesNotExist();
         
         return ValueTask.CompletedTask;
     }
-}
-
-public interface IDiagnosticsCommandOutput
-{
-    void ConfigExists();
-    void ConfigDoesNotExist();
 }
