@@ -14,15 +14,19 @@ public class DiagnosticsCommandTests
     {
         var console = new FakeConsole();
 
-        var os = new TestOperatingSystem()
-            .SetGetConfig(c => c.Exists = true);
+        var os = Substitute.For<IOperatingSystem>();
+        os.GetConfig().ReturnsForAnyArgs(new ShellConfig()
+        {
+            Exists = true
+        });
 
         var output = Substitute.For<IDiagnosticsCommandOutput>();
 
         var command = new DiagnosticsCommand(output, os);
 
-        await command.ExecuteAsync(console);
+        var result = command.ExecuteAsync(console);
         output.Received().ConfigDirExists();
+        result.Should().HaveSucceeded();
     }
 
     [Fact]
@@ -30,14 +34,18 @@ public class DiagnosticsCommandTests
     {
         var console = new FakeConsole();
 
-        var os = new TestOperatingSystem()
-            .SetGetConfig(c => c.Exists = false);
+        var os = Substitute.For<IOperatingSystem>();
+        os.GetConfig().ReturnsForAnyArgs(new ShellConfig()
+        {
+            Exists = false
+        });
 
         var output = Substitute.For<IDiagnosticsCommandOutput>();
 
         var command = new DiagnosticsCommand(output, os);
 
-        await command.ExecuteAsync(console);
+        var result = command.ExecuteAsync(console);
         output.ReceivedWithAnyArgs().ConfigDirDoesNotExist(default, default);
+        result.Should().HaveFailed();
     }
 }

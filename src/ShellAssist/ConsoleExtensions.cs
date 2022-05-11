@@ -6,20 +6,20 @@ public static class ConsoleExtensions
 {
     private static string _tickIcon = "\u221A";
     
-    public static void ShowSuccess(this IConsole console, string message)
+    public static void WriteSuccess(this IConsole console, string message, ConsoleColor colour=ConsoleColor.White)
     {
-        console.WriteIcon(_tickIcon, message, ConsoleColor.Green);
+        console.WriteIcon(_tickIcon, message, ConsoleColor.Green, colour);
     }
 
-    public static void ShowFailure(this IConsole console, string message)
+    public static void WriteFailure(this IConsole console, string message, ConsoleColor colour=ConsoleColor.White)
     {
-        console.WriteIcon("x", message, ConsoleColor.Red);
+        console.WriteIcon("x", message, ConsoleColor.Red, colour);
     }
 
-    public static void WriteIcon(this IConsole console, string icon, string message, ConsoleColor colour)
+    public static void WriteIcon(this IConsole console, string icon, string message, ConsoleColor iconColour, ConsoleColor color)
     {
-        console.WriteInColour($"{icon} ", colour);
-        console.Output.Write(message);
+        console.WriteInColour($"{icon} ", iconColour);
+        console.WriteInColour(message, color);
     }
 
     public static void WriteInColour(this IConsole console, string message, ConsoleColor colour)

@@ -13,13 +13,13 @@ public class DiagnosticsCommandOutput : IDiagnosticsCommandOutput
 
     public void ConfigDirExists()
     {
-        _console.ShowSuccess("Config directory exists");
+        _console.WriteSuccess("Config directory exists");
         _console.NewLine();
     }
 
     public void ConfigDirDoesNotExist(bool canBeFixed, string directoryPath)
     {
-        _console.ShowFailure("Config directory does not exist");
+        _console.WriteFailure("Config directory does not exist");
         
         if (canBeFixed)
             _console.WriteInColour(" - [Fixable]", ConsoleColor.Yellow);

@@ -1,5 +1,6 @@
 using CliFx;
 using CliFx.Attributes;
+using CliFx.Exceptions;
 using CliFx.Infrastructure;
 
 namespace ShellAssist.Commands.Diagnostics;
@@ -18,10 +19,18 @@ public class DiagnosticsCommand : ICommand
 
     public async ValueTask ExecuteAsync(IConsole console)
     {
+        bool failed = false;
+        
         var shellConfig = _os.GetConfig();
         if (shellConfig.Exists)
             _output.ConfigDirExists();
         else
-            _output.ConfigDirDoesNotExist(true, shellConfig.DisplayDirectory);
+        {
+            _output.ConfigDirDoesNotExist(true, shellConfig.Directory);
+            failed = true;
+        }
+        
+        if (failed == true)
+            throw new CommandException("Diagnostics failed");
     }
 }
