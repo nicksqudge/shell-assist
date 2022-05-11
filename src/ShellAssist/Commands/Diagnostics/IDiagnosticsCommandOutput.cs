@@ -2,6 +2,6 @@ namespace ShellAssist.Commands.Diagnostics;
 
 public interface IDiagnosticsCommandOutput
 {
-    void ConfigExists();
-    void ConfigDoesNotExist();
+    void ConfigDirExists();
+    void ConfigDirDoesNotExist(bool canBeFixed, string directoryPath);
 }

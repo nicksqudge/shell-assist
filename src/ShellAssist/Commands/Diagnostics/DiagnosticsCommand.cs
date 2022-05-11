@@ -16,17 +16,12 @@ public class DiagnosticsCommand : ICommand
         _os = os;
     }
 
-    public ValueTask ExecuteAsync(IConsole console)
+    public async ValueTask ExecuteAsync(IConsole console)
     {
         var shellConfig = _os.GetConfig();
-        if (shellConfig.Exists == false)
-        {
-            _output.ConfigExists();
-            return ValueTask.FromException;
-        }
-        
-        _output.ConfigDoesNotExist();
-        
-        return ValueTask.CompletedTask;
+        if (shellConfig.Exists)
+            _output.ConfigDirExists();
+        else
+            _output.ConfigDirDoesNotExist(true, shellConfig.DisplayDirectory);
     }
 }

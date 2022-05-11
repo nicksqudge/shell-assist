@@ -9,9 +9,7 @@ public class Windows : IOperatingSystem
 {
     public ShellConfig GetConfig()
     {
-        return new ShellConfig()
-        {
-            Exists = false
-        };
+        var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ShellAssist");
+        return new ShellConfig(new DirectoryInfo(directory));
     }
 }
