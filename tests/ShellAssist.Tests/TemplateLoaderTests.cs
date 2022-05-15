@@ -11,22 +11,6 @@ namespace ShellAssist.Tests;
 public class TemplateLoaderTests
 {
     [Fact]
-    public async Task ValidTemplate()
-    {
-        string content = @"{
-            'version': 1,
-            'command': 'Something here'
-        }";
-
-        var supportedTemplates = new Dictionary<int, Type>();
-        supportedTemplates.Add(1, typeof(Version1CommandTemplate));
-        
-        var templateLoader = new TemplateLoader(supportedTemplates);
-        var template = templateLoader.LoadTemplate(content);
-        template.Should().BeOfType<Version1CommandTemplate>();
-    }
-
-    [Fact]
     public async Task InvalidTemplate()
     {
         string content = @"{

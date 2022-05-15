@@ -19,8 +19,14 @@ public class TemplateLoader
             if (!supportedVersions.ContainsKey(template.Version))
                 return null;
 
-            var commandTemplate = supportedVersions[template.Version];
-            return JsonConvert.DeserializeObject(content, commandTemplate) as ICommandTemplate;
+            var commandTemplateType = supportedVersions[template.Version];
+            var convertType = typeof(Template<>).MakeGenericType(new Type[] { commandTemplateType });
+            
+            dynamic result = JsonConvert.DeserializeObject(content, convertType);
+            if (result == null)
+                return null;
+            
+            return result.Command;
         }
         catch
         {
