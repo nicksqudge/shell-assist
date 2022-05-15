@@ -11,7 +11,7 @@ public class TemplateLoader
         this.supportedVersions = supportedVersions;
     }
 
-    public Template Load(string content)
+    public ICommandTemplate LoadTemplate(string content)
     {
         try
         {
@@ -19,7 +19,8 @@ public class TemplateLoader
             if (!supportedVersions.ContainsKey(template.Version))
                 return null;
 
-            return template;
+            var commandTemplate = supportedVersions[template.Version];
+            return JsonConvert.DeserializeObject(content, commandTemplate) as ICommandTemplate;
         }
         catch
         {

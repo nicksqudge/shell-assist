@@ -1,10 +1,12 @@
-using System.Text.Json.Serialization;
-
 namespace ShellAssist.Templates;
 
 public class Template
 {
     public int Version { get; set; }
+}
     
-    public string Command { get; set; }
+public class Template<T> : Template
+    where T : ICommandTemplate
+{
+    public T Command { get; set; }
 }

@@ -19,13 +19,11 @@ public class TemplateLoaderTests
         }";
 
         var supportedTemplates = new Dictionary<int, Type>();
-        supportedTemplates.Add(1, typeof(string));
+        supportedTemplates.Add(1, typeof(Version1CommandTemplate));
         
         var templateLoader = new TemplateLoader(supportedTemplates);
-        var template = templateLoader.Load(content);
-
-        template.Version.Should().Be(1);
-        template.Command.Should().Be("Something here");
+        var template = templateLoader.LoadTemplate(content);
+        template.Should().BeOfType<Version1CommandTemplate>();
     }
 
     [Fact]
@@ -37,11 +35,10 @@ public class TemplateLoaderTests
         }";
 
         var supportedTemplates = new Dictionary<int, Type>();
-        supportedTemplates.Add(1, typeof(string));
+        supportedTemplates.Add(1, typeof(Version1CommandTemplate));
 
         var templateLoader = new TemplateLoader(supportedTemplates);
-        var template = templateLoader.Load(content);
-
+        var template = templateLoader.LoadTemplate(content);
         template.Should().BeNull();
     }
 
@@ -56,12 +53,11 @@ public class TemplateLoaderTests
         var supportedTemplates = new Dictionary<int, Type>();
 
         var templateLoader = new TemplateLoader(supportedTemplates);
-        var template = templateLoader.Load(content);
-
+        var template = templateLoader.LoadTemplate(content);
         template.Should().BeNull();
     }
 
-    [Fact(Skip = "Just for now")]
+    [Fact]
     public async Task Version1Template()
     {
         string content = @"{
@@ -78,9 +74,8 @@ public class TemplateLoaderTests
         supportedTemplates.Add(1, typeof(Version1CommandTemplate));
         
         var templateLoader = new TemplateLoader(supportedTemplates);
-        var template = templateLoader.Load(content);
-
-        template.Version.Should().Be(1);
-        template.Command.Should().Be("Something here");
+        var template = templateLoader.LoadTemplate(content);
+        template.Should().BeOfType<Version1CommandTemplate>();
+        template.ToCommand().Should().Be("ping www.google.com");
     }
 }
