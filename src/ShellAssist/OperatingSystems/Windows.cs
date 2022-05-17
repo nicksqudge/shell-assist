@@ -1,12 +1,6 @@
-namespace ShellAssist;
+using System.Diagnostics;
 
-public interface IOperatingSystem
-{
-    ShellConfig GetConfig();
-    void CreateDirectory(string directory);
-    void CreateFile(string directory, string fileName, string contents);
-    bool DoesFileExist(string directory, string fileName);
-}
+namespace ShellAssist.OperatingSystems;
 
 public class Windows : IOperatingSystem
 {
@@ -24,12 +18,28 @@ public class Windows : IOperatingSystem
 
     public void CreateFile(string directory, string fileName, string contents)
     {
-        File.WriteAllText(fileName, contents);
+        if (Directory.Exists(directory) == false)
+            CreateDirectory(directory);
+        
+        var path = Path.Combine(directory, fileName);
+        File.WriteAllText(path, contents);
     }
 
     public bool DoesFileExist(string directory, string fileName)
     {
         var path = Path.Combine(directory, fileName);
         return File.Exists(path);
+    }
+
+    public void OpenFile(string directory, string fileName)
+    {
+        var path = Path.Combine(directory, fileName);
+        new Process()
+        {
+            StartInfo = new ProcessStartInfo(path)
+            {
+                UseShellExecute = true
+            }
+        }.Start();
     }
 }

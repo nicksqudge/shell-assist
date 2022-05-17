@@ -2,6 +2,7 @@ using CliFx;
 using CliFx.Attributes;
 using CliFx.Exceptions;
 using CliFx.Infrastructure;
+using ShellAssist.OperatingSystems;
 
 namespace ShellAssist.Commands.Diagnostics;
 

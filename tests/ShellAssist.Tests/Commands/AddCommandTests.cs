@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using CliFx.Infrastructure;
 using NSubstitute;
 using ShellAssist.Commands.AddCommand;
+using ShellAssist.OperatingSystems;
+using ShellAssist.Templates;
 using ShellAssist.Tests.TestHelpers;
 using ShellAssist.Tests.TestHelpers.Builders;
 using Xunit;
@@ -19,7 +21,7 @@ public class AddCommandTests
     {
         _console = new FakeConsole();
         _os = Substitute.For<IOperatingSystem>();
-        _command = new AddCommand(_os);
+        _command = new AddCommand(_os, new TemplateVersions());
     }
     
     [Theory]
@@ -69,6 +71,7 @@ public class AddCommandTests
             Arg.Is<string>(input => input.Contains("simple-command.json")), 
             Arg.Any<string>()
         );
+        _os.ReceivedWithAnyArgs().OpenFile(default, default);
     }
 
     [Theory]
@@ -89,6 +92,7 @@ public class AddCommandTests
             Arg.Is<string>(input => input.Contains($"{expectedName}.json")), 
             Arg.Any<string>()
         );
+        _os.ReceivedWithAnyArgs().OpenFile(default, default);
     }
 
     [Fact]
@@ -105,5 +109,6 @@ public class AddCommandTests
             Arg.Any<string>(), 
             Arg.Any<string>()
         );
+        _os.DidNotReceiveWithAnyArgs().OpenFile(default, default);
     }
 }

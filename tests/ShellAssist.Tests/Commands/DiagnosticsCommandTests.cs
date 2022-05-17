@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using CliFx.Infrastructure;
 using NSubstitute;
 using ShellAssist.Commands.Diagnostics;
+using ShellAssist.OperatingSystems;
 using ShellAssist.Tests.TestHelpers;
 using Xunit;
 

@@ -22,15 +22,18 @@ public abstract class BaseCommand : ICommand
     protected void LogError(string message)
     {
         _console.WriteFailure($"[DEBUG] - {message}", ConsoleColor.Cyan);
+        _console.NewLine();
     }
 
     protected void LogInfo(string message)
     {
         _console.WriteInColour($"[DEBUG] - {message}", ConsoleColor.Cyan);
+        _console.NewLine();
     }
 
     protected void LogSuccess(string message)
     {
         _console.WriteSuccess($"[DEBUG] - {message}", ConsoleColor.Cyan);
+        _console.NewLine();
     }
 }

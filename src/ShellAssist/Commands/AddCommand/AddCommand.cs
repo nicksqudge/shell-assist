@@ -2,6 +2,9 @@ using CliFx;
 using CliFx.Attributes;
 using CliFx.Exceptions;
 using CliFx.Infrastructure;
+using Newtonsoft.Json;
+using ShellAssist.OperatingSystems;
+using ShellAssist.Templates;
 
 namespace ShellAssist.Commands.AddCommand;
 
@@ -9,10 +12,12 @@ namespace ShellAssist.Commands.AddCommand;
 public class AddCommand : BaseCommand
 {
     private readonly IOperatingSystem _os;
+    private readonly ITemplateVersions _templateVersions;
 
-    public AddCommand(IOperatingSystem os)
+    public AddCommand(IOperatingSystem os, ITemplateVersions templateVersions)
     {
         _os = os;
+        _templateVersions = templateVersions;
     }
 
     [CommandParameter(0, Description = "The name of the command")]
@@ -59,13 +64,20 @@ public class AddCommand : BaseCommand
     private void CreateFile(string file, ShellConfig config)
     {
         var directory = config.GetCommandDirectory();
+        LogInfo($"Config directory: {directory}");
         if (_os.DoesFileExist(directory, file))
         {
             string error = $"Command already exists at: {directory}/{file}";
             LogError(error);
             throw new CommandException(error);
         }
-        
-        _os.CreateFile(directory, file, "Some content");
+
+        var latestVersion = _templateVersions.FetchLatest();
+        _os.CreateFile(
+            directory, 
+            file, 
+            JsonConvert.SerializeObject(latestVersion, Formatting.Indented)
+        );
+        _os.OpenFile(directory, file);
     }
 }

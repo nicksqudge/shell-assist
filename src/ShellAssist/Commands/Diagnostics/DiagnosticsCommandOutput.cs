@@ -25,6 +25,7 @@ public class DiagnosticsCommandOutput : IDiagnosticsCommandOutput
             _console.WriteInColour(" - [Fixable]", ConsoleColor.Yellow);
         
         _console.NewLine();
+        
         _console.WriteInColour($"\t{directoryPath}", ConsoleColor.DarkGray);
         _console.NewLine();
     }
