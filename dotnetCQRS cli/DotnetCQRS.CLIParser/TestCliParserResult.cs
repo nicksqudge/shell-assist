@@ -7,7 +7,7 @@ namespace DotnetCQRS.CLIParser
 {
     public class TestCliParserResult
     {
-        public ICommand Command { get; set; }
+        public ICliCommand Command { get; set; }
 
         public bool RanHandler { get; set; }
 

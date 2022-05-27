@@ -9,22 +9,27 @@ namespace DotnetCQRS.CLIParser
 {
     public class CliParser
     {
-        private readonly Dictionary<string, ICommand> map = new Dictionary<string, ICommand>();
+        private readonly Dictionary<string, ICliCommand> map = new Dictionary<string, ICliCommand>();
         private readonly ICommandDispatcher commandDispatcher;
-        private Action<ICommand> identifiedCommand;
+        private readonly string[] helpKeys = new string[]
+        {
+            "-h", "--help", "-?"
+        };
+        private Action<ICliCommand> identifiedCommand;
         private Action<bool> ranHandler;
+        private Action<bool> ranHelp;
 
         public CliParser(ICommandDispatcher commandDispatcher)
         {
             this.commandDispatcher = commandDispatcher;
         }
 
-        public CliParser AddCommand(string keyword, ICommand commandType)
+        public CliParser AddCommand(string keyword, ICliCommand commandType)
         {
-            if (this.map.ContainsKey(keyword))
+            if (map.ContainsKey(keyword))
                 throw new Exception($"Command {keyword} already exists");
 
-            this.map.Add(keyword, commandType);
+            map.Add(keyword, commandType);
             return this;
         }
 
@@ -34,6 +39,7 @@ namespace DotnetCQRS.CLIParser
 
             identifiedCommand = (command) => result.Command = command;
             ranHandler = (ranHandler) => result.RanHandler = ranHandler;
+            ranHelp = (ranHelp) => result.RanHelp = ranHelp;
 
             result.Result = await ParseAsync(args, cancellationToken);
 
@@ -52,9 +58,19 @@ namespace DotnetCQRS.CLIParser
             var command = map[keyword];
             identifiedCommand?.Invoke(command);
 
-            var result = await this.commandDispatcher.RunAsync(command, cancellationToken);
-            ranHandler?.Invoke(true);
-            return result;
+            if (helpKeys.Contains(args.Last().Trim()))
+            {
+                ranHelp?.Invoke(true);
+                ranHandler?.Invoke(false);
+                return Result.Success();
+            }
+            else
+            {
+                var result = await this.commandDispatcher.RunAsync(command, cancellationToken);
+                ranHandler?.Invoke(true);
+                ranHelp?.Invoke(false);
+                return result;
+            }
         }
     }
 }

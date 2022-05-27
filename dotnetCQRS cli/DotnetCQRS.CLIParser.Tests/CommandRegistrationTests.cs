@@ -1,47 +1,22 @@
-﻿using DotnetCQRS.Commands;
-using DotnetCQRS.Extensions.Microsoft.DependencyInjection;
-using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
-using DotnetCQRS.Extensions.FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NSubstitute;
+﻿using DotnetCQRS.CLIParser.Tests.Helpers;
 
 namespace DotnetCQRS.CLIParser.Tests
 {
-    public class CommandRegistrationTests
+    public class CommandRegistrationTests : TestSetup<CommandRegistrationContext, string>
     {
-        private CliParser cliParser;
-
-        private void Arrange()
-        {
-            var commandDispatcher = Substitute.For<ICommandDispatcher>();
-            commandDispatcher.RunAsync(Arg.Any<SimpleCommand>(), Arg.Any<CancellationToken>())
-                .ReturnsForAnyArgs(Result.Success());            
-
-            cliParser = new CliParser(commandDispatcher)
-                .AddCommand<SimpleCommand>("simple");
-        }
-
-        private Task<TestCliParserResult> Act(string command)
-        {
-            return cliParser.TestParseAsync(command, CancellationToken.None);
-        }
-
         [Fact]
         public async Task MatchedCommandsShouldRunHandler()
         {
-            Arrange();
+            Arrange(a => a.HandlerReturnsSuccess());
 
-            var result = await Act("simple");
+            await Act("simple");
 
-            result.Command.Should().BeOfType<SimpleCommand>();
-            result.RanHandler.Should().BeTrue();
-            result.RanHelp.Should().BeFalse();
-            result.Result.Should().BeSuccess();
+            Assert(a => a
+                .ShouldBeSimpleCommand()
+                .ShouldHaveRanHandler()
+                .ShouldNotHaveRanHelp()
+                .ShouldHaveSuccessResult()
+            );
         }
 
         [Theory]
@@ -50,47 +25,46 @@ namespace DotnetCQRS.CLIParser.Tests
         [InlineData("-h")]
         public async Task CommandWithHelpShouldRunHelpHandler(string helpCommand)
         {
-            Arrange();
+            Arrange(a => a.HandlerReturnsSuccess());
 
-            var result = await Act($"simple {helpCommand}");
+            await Act($"simple {helpCommand}");
 
-            result.Command.Should().BeOfType<SimpleCommand>();
-            result.RanHandler.Should().BeFalse();
-            result.RanHelp.Should().BeTrue();
-            result.Result.Should().BeSuccess();
+            Assert(a => a
+                .ShouldBeSimpleCommand()
+                .ShouldHaveRanHelp()
+                .ShouldNotHaveRanHandler()
+                .ShouldHaveSuccessResult()
+            );
         }
 
         [Fact]
         public async Task UnmatchedCommandsShouldReturnAnError()
         {
-            Arrange();
+            Arrange(a => a.HandlerReturnsSuccess());
 
-            var result = await Act("unknown");
+            await Act("unknown");
 
-            result.Command.Should().BeNull();
-            result.RanHandler.Should().BeFalse();
-            result.RanHelp.Should().BeFalse();
-            result.Result.Should().BeFailure()
-                .And.HaveErrorCode("command_not_found");
+            Assert(a => a
+                .ShouldHaveNoCommand()
+                .ShouldNotHaveRanHandler()
+                .ShouldNotHaveRanHelp()
+                .ShouldHaveFailedResult()
+                .ShouldHaveErrorCode("command_not_found"));
         }
 
         [Fact]
         public async Task PassNothing()
         {
-            Arrange();
+            Arrange(a => a.HandlerReturnsSuccess());
 
-            var result = await Act("");
+            await Act("");
 
-            result.Command.Should().BeNull();
-            result.RanHandler.Should().BeFalse();
-            result.RanHelp.Should().BeFalse();
-            result.Result.Should().BeFailure()
-                .And.HaveErrorCode("invalid_args");
+            Assert(a => a
+                .ShouldHaveNoCommand()
+                .ShouldNotHaveRanHandler()
+                .ShouldNotHaveRanHelp()
+                .ShouldHaveFailedResult()
+                .ShouldHaveErrorCode("invalid_args"));
         }
-    }
-
-    internal class SimpleCommand : ICommand
-    {
-
     }
 }

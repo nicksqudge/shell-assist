@@ -7,7 +7,7 @@ namespace DotnetCQRS.CLIParser
     public static class CLIParserExtensions
     {
         public static CliParser AddCommand<T>(this CliParser parser, string keyword)
-            where T : ICommand, new()
+            where T : ICliCommand, new()
         {
             var command = new T();
             return parser.AddCommand(keyword, command);
