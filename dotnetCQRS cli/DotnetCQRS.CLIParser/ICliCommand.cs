@@ -7,5 +7,6 @@ namespace DotnetCQRS.CLIParser
 {
     public interface ICliCommand : ICommand
     {
+        CommandDetail GetDetail();
     }
 }

@@ -1,10 +1,10 @@
-﻿using DotnetCQRS.Commands;
-using FluentAssertions;
+﻿using DotnetCQRS.CLIParser.Tests.Helpers;
+using DotnetCQRS.Commands;
 using DotnetCQRS.Extensions.FluentAssertions;
+using FluentAssertions;
 using NSubstitute;
-using DotnetCQRS.CLIParser.Tests.Helpers;
 
-namespace DotnetCQRS.CLIParser.Tests
+namespace DotnetCQRS.CLIParser.Tests.CommandRegistration
 {
     public class CommandRegistrationContext : ITestContext<string>
     {

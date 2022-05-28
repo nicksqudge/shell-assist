@@ -1,6 +1,6 @@
 ﻿using DotnetCQRS.CLIParser.Tests.Helpers;
 
-namespace DotnetCQRS.CLIParser.Tests
+namespace DotnetCQRS.CLIParser.Tests.CommandRegistration
 {
     public class CommandRegistrationTests : TestSetup<CommandRegistrationContext, string>
     {
