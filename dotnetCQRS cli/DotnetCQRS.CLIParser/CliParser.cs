@@ -24,7 +24,8 @@ namespace DotnetCQRS.CLIParser
             this.commandDispatcher = commandDispatcher;
         }
 
-        public CliParser AddCommand(string keyword, ICliCommand commandType)
+        public CliParser AddCommand<T>(string keyword, T commandType)
+            where T : class, ICliCommand<T>
         {
             if (map.ContainsKey(keyword))
                 throw new Exception($"Command {keyword} already exists");
@@ -54,8 +55,8 @@ namespace DotnetCQRS.CLIParser
             string keyword = args.First().Trim();
             if (!map.ContainsKey(keyword))
                 return new Result(false, "command_not_found");
-
-            var command = map[keyword];
+            
+            var command = ProcessCommand(args.RemoveCommandKeyword(), map[keyword]);
             identifiedCommand?.Invoke(command);
 
             if (helpKeys.Contains(args.Last().Trim()))
@@ -71,6 +72,14 @@ namespace DotnetCQRS.CLIParser
                 ranHelp?.Invoke(false);
                 return result;
             }
+        }
+
+        private ICliCommand ProcessCommand(string[] args, ICliCommand command)
+        {
+            var definition = command.GetDetail();
+            
+            
+            return command;
         }
     }
 }

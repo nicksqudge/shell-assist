@@ -27,6 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DotnetCQRS.CLIParser.Extensions.FluentAssertions\DotnetCQRS.CLIParser.Extensions.FluentAssertions.csproj" />
       <ProjectReference Include="..\DotnetCQRS.CLIParser\DotnetCQRS.CLIParser.csproj" />
     </ItemGroup>
 

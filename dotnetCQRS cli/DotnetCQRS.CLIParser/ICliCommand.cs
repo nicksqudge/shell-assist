@@ -7,6 +7,11 @@ namespace DotnetCQRS.CLIParser
 {
     public interface ICliCommand : ICommand
     {
-        CommandDetail GetDetail();
+    }
+
+    public interface ICliCommand<T> : ICliCommand
+        where T : class, ICliCommand<T>
+    {
+        CommandDetail<T> GetDetail();
     }
 }

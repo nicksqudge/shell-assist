@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DotnetCQRS.CLIParser\DotnetCQRS.CLIParser.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotnetCQRS.Extensions.FluentAssertions" Version="1.1.0" />
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
+  </ItemGroup>
+
+</Project>

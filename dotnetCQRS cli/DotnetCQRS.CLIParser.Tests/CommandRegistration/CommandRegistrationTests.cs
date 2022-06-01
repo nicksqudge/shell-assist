@@ -1,22 +1,22 @@
 ﻿using DotnetCQRS.CLIParser.Tests.Helpers;
+using FluentAssertions;
+
 
 namespace DotnetCQRS.CLIParser.Tests.CommandRegistration
 {
-    public class CommandRegistrationTests : TestSetup<CommandRegistrationContext, string>
+    public class CommandRegistrationTests : ArrangeActAssert
     {
         [Fact]
         public async Task MatchedCommandsShouldRunHandler()
         {
-            Arrange(a => a.HandlerReturnsSuccess());
-
-            await Act("simple");
-
-            Assert(a => a
-                .ShouldBeSimpleCommand()
-                .ShouldHaveRanHandler()
-                .ShouldNotHaveRanHelp()
-                .ShouldHaveSuccessResult()
-            );
+            await Arrange(() => new CommandRegistrationContext()
+                .HandlerReturnsSuccess()
+            )
+            .Act(context => context.Run("simple"))
+            .Assert(result => result.Should().HaveCommandOfType<SimpleCommand>()
+                .And.HaveRunHandler()
+                .And.NotHaveRunHelp()
+                .And.BeSuccessful());
         }
 
         [Theory]
@@ -25,46 +25,38 @@ namespace DotnetCQRS.CLIParser.Tests.CommandRegistration
         [InlineData("-h")]
         public async Task CommandWithHelpShouldRunHelpHandler(string helpCommand)
         {
-            Arrange(a => a.HandlerReturnsSuccess());
-
-            await Act($"simple {helpCommand}");
-
-            Assert(a => a
-                .ShouldBeSimpleCommand()
-                .ShouldHaveRanHelp()
-                .ShouldNotHaveRanHandler()
-                .ShouldHaveSuccessResult()
-            );
+            await Arrange(() => new CommandRegistrationContext()
+                    .HandlerReturnsSuccess()
+                ).Act(context => context.Run($"simple {helpCommand}"))
+                .Assert(result => result.Should().HaveCommandOfType<SimpleCommand>()
+                    .And.HaveRunHelp()
+                    .And.NotHaveRunHandler()
+                    .And.BeSuccessful());
         }
-
+        
         [Fact]
         public async Task UnmatchedCommandsShouldReturnAnError()
         {
-            Arrange(a => a.HandlerReturnsSuccess());
-
-            await Act("unknown");
-
-            Assert(a => a
-                .ShouldHaveNoCommand()
-                .ShouldNotHaveRanHandler()
-                .ShouldNotHaveRanHelp()
-                .ShouldHaveFailedResult()
-                .ShouldHaveErrorCode("command_not_found"));
+            await Arrange(() => new CommandRegistrationContext()
+                    .HandlerReturnsSuccess()
+                ).Act(context => context.Run("unknown"))
+                .Assert(result => result.Should().NotHaveACommand()
+                    .And.NotHaveRunHandler()
+                    .And.NotHaveRunHelp()
+                    .And.HaveFailed()
+                    .And.HaveErrorCode("command_not_found"));
         }
-
+        
         [Fact]
         public async Task PassNothing()
         {
-            Arrange(a => a.HandlerReturnsSuccess());
-
-            await Act("");
-
-            Assert(a => a
-                .ShouldHaveNoCommand()
-                .ShouldNotHaveRanHandler()
-                .ShouldNotHaveRanHelp()
-                .ShouldHaveFailedResult()
-                .ShouldHaveErrorCode("invalid_args"));
+            await Arrange(() => new CommandRegistrationContext().HandlerReturnsSuccess())
+                .Act(context => context.Run(""))
+                .Assert(result => result.Should().NotHaveACommand()
+                    .And.NotHaveRunHandler()
+                    .And.NotHaveRunHelp()
+                    .And.HaveFailed()
+                    .And.HaveErrorCode("invalid_args"));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DotnetCQRS.Commands;
+﻿using System.Linq;
+using DotnetCQRS.Commands;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,7 +8,7 @@ namespace DotnetCQRS.CLIParser
     public static class CLIParserExtensions
     {
         public static CliParser AddCommand<T>(this CliParser parser, string keyword)
-            where T : ICliCommand, new()
+            where T : class, ICliCommand<T>, new()
         {
             var command = new T();
             return parser.AddCommand(keyword, command);
@@ -22,5 +23,8 @@ namespace DotnetCQRS.CLIParser
 
             return parser.TestParseAsync(args, cancellationToken);
         }
+
+        public static string[] RemoveCommandKeyword(this string[] args)
+            => args.Skip(1).ToArray();
     }
 }

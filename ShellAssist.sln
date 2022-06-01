@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetCQRS.CLIParser.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetCQRS.CLIParser", "dotnetCQRS cli\DotnetCQRS.CLIParser\DotnetCQRS.CLIParser.csproj", "{9CCFB96B-0202-444F-9A09-E734B3C9F551}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetCQRS.CLIParser.Extensions.FluentAssertions", "dotnetCQRS cli\DotnetCQRS.CLIParser.Extensions.FluentAssertions\DotnetCQRS.CLIParser.Extensions.FluentAssertions.csproj", "{47DE9BF0-0828-4357-938F-7A825D3F3711}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9CCFB96B-0202-444F-9A09-E734B3C9F551}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CCFB96B-0202-444F-9A09-E734B3C9F551}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CCFB96B-0202-444F-9A09-E734B3C9F551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47DE9BF0-0828-4357-938F-7A825D3F3711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47DE9BF0-0828-4357-938F-7A825D3F3711}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47DE9BF0-0828-4357-938F-7A825D3F3711}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47DE9BF0-0828-4357-938F-7A825D3F3711}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{293F70C8-420F-4CEA-B88D-0E498831B973} = {5735DF62-FD60-4923-8C7D-3EBBC1B6CA9C}
 		{F9E2BF10-F78B-4DAE-93A3-81F23C60CCE8} = {6788E968-5732-4E43-8DBA-525F53DFC22E}
 		{9CCFB96B-0202-444F-9A09-E734B3C9F551} = {6788E968-5732-4E43-8DBA-525F53DFC22E}
+		{47DE9BF0-0828-4357-938F-7A825D3F3711} = {6788E968-5732-4E43-8DBA-525F53DFC22E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00989A13-F27D-4A22-80FB-D3728BAA5BA6}
