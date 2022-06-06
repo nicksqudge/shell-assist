@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using ShellAssist.Templates;
 
 namespace ShellAssist.OperatingSystems;
 
@@ -31,6 +32,11 @@ public class Windows : IOperatingSystem
         return File.Exists(path);
     }
 
+    public bool DoesDirectoryExist(string directory)
+    {
+        return Directory.Exists(directory);
+    }
+
     public void OpenFile(string directory, string fileName)
     {
         var path = Path.Combine(directory, fileName);
@@ -41,5 +47,11 @@ public class Windows : IOperatingSystem
                 UseShellExecute = true
             }
         }.Start();
+    }
+
+    public IEnumerable<FileInfo> GetTemplateFilesFromDirectory(string directory)
+    {
+        var files = Directory.GetFiles(directory, "*.json");
+        return files.Select(f => new FileInfo(f));
     }
 }

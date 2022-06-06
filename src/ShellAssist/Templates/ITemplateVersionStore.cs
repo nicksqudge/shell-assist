@@ -2,13 +2,13 @@ using ShellAssist.Templates.Versions;
 
 namespace ShellAssist.Templates;
 
-public interface ITemplateVersions
+public interface ITemplateVersionStore
 {
     Dictionary<int, Type> FetchAllVersions();
     Template FetchLatest();
 }
 
-public class TemplateVersions : ITemplateVersions
+public class TemplateVersionStore : ITemplateVersionStore
 {
     public Dictionary<int, Type> FetchAllVersions()
         => new Dictionary<int, Type>()

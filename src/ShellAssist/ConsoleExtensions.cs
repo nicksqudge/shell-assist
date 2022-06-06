@@ -34,4 +34,9 @@ public static class ConsoleExtensions
     {
         console.Output.Write("\r\n");
     }
+
+    public static void WriteListItem(this IConsole console, string item)
+    {
+        console.Output.WriteLine($" - {item}");
+    }
 }

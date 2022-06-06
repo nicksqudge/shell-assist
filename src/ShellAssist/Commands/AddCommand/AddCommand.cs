@@ -12,12 +12,12 @@ namespace ShellAssist.Commands.AddCommand;
 public class AddCommand : BaseCommand
 {
     private readonly IOperatingSystem _os;
-    private readonly ITemplateVersions _templateVersions;
+    private readonly ITemplateVersionStore _templateVersionStore;
 
-    public AddCommand(IOperatingSystem os, ITemplateVersions templateVersions)
+    public AddCommand(IOperatingSystem os, ITemplateVersionStore templateVersionStore)
     {
         _os = os;
-        _templateVersions = templateVersions;
+        _templateVersionStore = templateVersionStore;
     }
 
     [CommandParameter(0, Description = "The name of the command")]
@@ -72,7 +72,7 @@ public class AddCommand : BaseCommand
             throw new CommandException(error);
         }
 
-        var latestVersion = _templateVersions.FetchLatest();
+        var latestVersion = _templateVersionStore.FetchLatest();
         _os.CreateFile(
             directory, 
             file, 

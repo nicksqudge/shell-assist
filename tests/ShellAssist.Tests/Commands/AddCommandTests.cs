@@ -21,7 +21,7 @@ public class AddCommandTests
     {
         _console = new FakeConsole();
         _os = Substitute.For<IOperatingSystem>();
-        _command = new AddCommand(_os, new TemplateVersions());
+        _command = new AddCommand(_os, new TemplateVersionStore());
     }
     
     [Theory]

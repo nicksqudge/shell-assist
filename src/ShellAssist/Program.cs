@@ -4,16 +4,18 @@ using Microsoft.Extensions.DependencyInjection;
 using ShellAssist;
 using ShellAssist.Commands.AddCommand;
 using ShellAssist.Commands.Diagnostics;
+using ShellAssist.Commands.ListCommand;
 using ShellAssist.OperatingSystems;
 using ShellAssist.Templates;
 
 var services = new ServiceCollection()
     .AddTransient<DiagnosticsCommand>()
     .AddTransient<AddCommand>()
+    .AddTransient<ListCommand>()
     .AddTransient<IOperatingSystem, Windows>()
     .AddTransient<IDiagnosticsCommandOutput, DiagnosticsCommandOutput>()
     .AddTransient<IConsole, SystemConsole>()
-    .AddTransient<ITemplateVersions, TemplateVersions>()
+    .AddTransient<ITemplateVersionStore, TemplateVersionStore>()
     .BuildServiceProvider();
 
 return await new CliApplicationBuilder()
