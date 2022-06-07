@@ -2,20 +2,20 @@ using ShellAssist.Templates;
 
 namespace ShellAssist.Core.Localisations;
 
-public class EnglishHandler : ILocalisationHandler
+internal class EnglishHandler : ILocalisationHandler
 {
     public string InvalidCommandName()
     {
         return "Invalid Command Name";
     }
 
-    public string CommandCreated(CommandFile file)
+    public string CommandCreated(CommandFile command)
     {
-        return $"{file.Name} was created";
+        return $"{command.Name} was created";
     }
 
-    public string CommandExists(CommandFile file)
+    public string CommandExists(CommandFile command)
     {
-        return $"Command {file.Name} already exists";
+        return $"Command {command.Name} already exists";
     }
 }

@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using DotnetCQRS.Extensions.Microsoft.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using ShellAssist.Core.API;
@@ -6,6 +7,7 @@ using ShellAssist.Core.Localisations;
 using ShellAssist.Core.OperatingSystems;
 using ShellAssist.Templates;
 
+[assembly: InternalsVisibleTo("ShellAssist.Tests")]
 namespace ShellAssist.Core;
 
 public static class ServiceExtensions

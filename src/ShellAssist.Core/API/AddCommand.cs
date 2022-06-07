@@ -14,7 +14,7 @@ public class AddCommandValidator : AbstractValidator<AddCommand>
 {
 }
 
-public class AddCommandHandler : ICommandHandler<AddCommand>
+internal class AddCommandHandler : ICommandHandler<AddCommand>
 {
     private readonly IOperatingSystem _operatingSystem;
     private readonly IConsole _console;

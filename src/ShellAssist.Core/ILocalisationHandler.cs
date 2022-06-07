@@ -2,11 +2,11 @@ using ShellAssist.Templates;
 
 namespace ShellAssist.Core;
 
-public interface ILocalisationHandler
+internal interface ILocalisationHandler
 {
     string InvalidCommandName();
 
-    string CommandCreated(CommandFile file);
+    string CommandCreated(CommandFile command);
 
-    string CommandExists(CommandFile file);
+    string CommandExists(CommandFile command);
 }
