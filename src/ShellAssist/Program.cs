@@ -2,9 +2,8 @@
 using CliFx.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using ShellAssist;
-using ShellAssist.Commands.AddCommand;
+using ShellAssist.Commands;
 using ShellAssist.Commands.Diagnostics;
-using ShellAssist.Commands.ListCommand;
 using ShellAssist.OperatingSystems;
 using ShellAssist.Templates;
 

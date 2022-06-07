@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using CliFx.Infrastructure;
 using NSubstitute;
-using ShellAssist.Commands.AddCommand;
+using ShellAssist.Commands;
 using ShellAssist.OperatingSystems;
 using ShellAssist.Templates;
 using ShellAssist.Tests.TestHelpers;

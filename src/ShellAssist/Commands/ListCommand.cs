@@ -2,7 +2,7 @@ using CliFx.Attributes;
 using CliFx.Infrastructure;
 using ShellAssist.OperatingSystems;
 
-namespace ShellAssist.Commands.ListCommand;
+namespace ShellAssist.Commands;
 
 [Command("list", Description = "Add a command")]
 public class ListCommand : BaseCommand

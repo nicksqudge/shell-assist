@@ -1,4 +1,3 @@
-using CliFx;
 using CliFx.Attributes;
 using CliFx.Exceptions;
 using CliFx.Infrastructure;
@@ -6,7 +5,7 @@ using Newtonsoft.Json;
 using ShellAssist.OperatingSystems;
 using ShellAssist.Templates;
 
-namespace ShellAssist.Commands.AddCommand;
+namespace ShellAssist.Commands;
 
 [Command("add", Description = "Add a command")]
 public class AddCommand : BaseCommand
