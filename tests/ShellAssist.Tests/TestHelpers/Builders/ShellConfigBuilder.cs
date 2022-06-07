@@ -11,20 +11,7 @@ public class ShellConfigBuilder
 
     public static ShellConfigBuilder Typical()
         => new ShellConfigBuilder()
-            .Exists()
             .SetDirectory("/test");
-
-    public ShellConfigBuilder Exists()
-    {
-        _exists = true;
-        return this;
-    }
-
-    public ShellConfigBuilder DoesNotExist()
-    {
-        _exists = false;
-        return this;
-    }
 
     public ShellConfigBuilder SetDirectory(string dir)
     {

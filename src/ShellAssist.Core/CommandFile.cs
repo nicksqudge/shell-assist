@@ -10,12 +10,24 @@ public class CommandFile
 
     public CommandFile(string directory, string commandName)
     {
+        if (commandName.EndsWith(".json"))
+            commandName = commandName.Replace(".json", "");
+        
         commandName = TidyName(commandName);
+        
         _filePath = Path.Combine(directory, $"{commandName}.json");
-
         Directory = directory;
         Name = commandName;
         FileName = Path.GetFileName(_filePath);
+    }
+
+    public CommandFile(FileInfo file)
+    {
+        _filePath = file.ToString();
+        
+        FileName = file.Name;
+        Directory = file.Directory.ToString();
+        Name = Path.GetFileNameWithoutExtension(file.Name);
     }
 
     public override string ToString()

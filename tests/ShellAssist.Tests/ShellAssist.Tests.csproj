@@ -27,8 +27,4 @@
       <ProjectReference Include="..\..\src\ShellAssist\ShellAssist.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="TestHelpers" />
-    </ItemGroup>
-
 </Project>
