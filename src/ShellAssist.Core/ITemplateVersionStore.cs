@@ -1,4 +1,4 @@
-using ShellAssist.Templates.Versions;
+using ShellAssist.Core.Versions;
 
 namespace ShellAssist.Templates;
 

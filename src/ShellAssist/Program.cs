@@ -1,24 +1,11 @@
-﻿using CliFx;
-using CliFx.Infrastructure;
+﻿using System.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
-using ShellAssist;
-using ShellAssist.Commands;
-using ShellAssist.Commands.Diagnostics;
-using ShellAssist.OperatingSystems;
-using ShellAssist.Templates;
+using ShellAssist.Core;
 
 var services = new ServiceCollection()
-    .AddTransient<DiagnosticsCommand>()
-    .AddTransient<AddCommand>()
-    .AddTransient<ListCommand>()
-    .AddTransient<IOperatingSystem, Windows>()
-    .AddTransient<IDiagnosticsCommandOutput, DiagnosticsCommandOutput>()
-    .AddTransient<IConsole, SystemConsole>()
-    .AddTransient<ITemplateVersionStore, TemplateVersionStore>()
+    .AddShellAssist()
     .BuildServiceProvider();
 
-return await new CliApplicationBuilder()
-    .AddCommandsFromThisAssembly()
-    .UseTypeActivator(services.GetRequiredService)
-    .Build()
-    .RunAsync();
+var rootCommand = new RootCommand();
+
+return rootCommand.Invoke(args);

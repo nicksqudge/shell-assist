@@ -1,3 +1,5 @@
+using ShellAssist.Templates;
+
 namespace ShellAssist;
 
 public class ShellConfig
@@ -16,19 +18,10 @@ public class ShellConfig
     public bool Exists { get; set; }
     public string Directory { get; set; } = string.Empty;
 
-    public string FormatCommandName(string input)
-    {
-        input = input.Trim();
-        input = input.Replace(" ", "-").Replace("!", "").Replace(".", "");
-        input = input.ToLower();
-        
-        foreach (var c in Path.GetInvalidFileNameChars())
-        {
-            input = input.Replace(c, ' ');
-        }
-
-        return $"{input}.json";
-    }
+    
 
     public string GetCommandDirectory() => Path.Combine(Directory, "Commands");
+
+    public CommandFile GetCommandFile(string commandName)
+        => new CommandFile(Directory, commandName);
 }

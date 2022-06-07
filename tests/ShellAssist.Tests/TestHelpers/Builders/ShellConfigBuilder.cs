@@ -6,11 +6,13 @@ public class ShellConfigBuilder
 {
     private bool _exists;
     private string _directory;
+    
+    public static string BaseDir = "/test";
 
     public static ShellConfigBuilder Typical()
         => new ShellConfigBuilder()
             .Exists()
-            .SetDirectory("/dir");
+            .SetDirectory("/test");
 
     public ShellConfigBuilder Exists()
     {

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellAssist.Tests", "tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellAssist", "src\ShellAssist\ShellAssist.csproj", "{293F70C8-420F-4CEA-B88D-0E498831B973}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellAssist.Core", "src\ShellAssist.Core\ShellAssist.Core.csproj", "{F3AB606F-507E-4088-AAB1-1D1E4DBEBCC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{293F70C8-420F-4CEA-B88D-0E498831B973}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{293F70C8-420F-4CEA-B88D-0E498831B973}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{293F70C8-420F-4CEA-B88D-0E498831B973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3AB606F-507E-4088-AAB1-1D1E4DBEBCC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3AB606F-507E-4088-AAB1-1D1E4DBEBCC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3AB606F-507E-4088-AAB1-1D1E4DBEBCC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3AB606F-507E-4088-AAB1-1D1E4DBEBCC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{239DE3E5-EDA8-4094-A0F3-7CE3F2C2C425} = {219A11DC-6304-4E11-A105-3F714F9210E0}
 		{293F70C8-420F-4CEA-B88D-0E498831B973} = {5735DF62-FD60-4923-8C7D-3EBBC1B6CA9C}
+		{F3AB606F-507E-4088-AAB1-1D1E4DBEBCC8} = {5735DF62-FD60-4923-8C7D-3EBBC1B6CA9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00989A13-F27D-4A22-80FB-D3728BAA5BA6}

@@ -1,7 +1,6 @@
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
+using ShellAssist.Templates;
 
-namespace ShellAssist.Templates.Versions;
+namespace ShellAssist.Core.Versions;
 
 public class Version1CommandTemplate : ICommandTemplate
 {
