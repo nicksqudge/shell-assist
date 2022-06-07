@@ -14,7 +14,7 @@ public class ShellConfig
     }
     
     public bool Exists { get; set; }
-    public string Directory { get; set; }
+    public string Directory { get; set; } = string.Empty;
 
     public string FormatCommandName(string input)
     {

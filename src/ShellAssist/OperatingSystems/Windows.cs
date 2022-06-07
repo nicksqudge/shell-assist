@@ -17,13 +17,13 @@ public class Windows : IOperatingSystem
         Directory.CreateDirectory(directory);
     }
 
-    public void CreateFile(string directory, string fileName, string contents)
+    public Task CreateFile(string directory, string fileName, string contents)
     {
         if (Directory.Exists(directory) == false)
             CreateDirectory(directory);
         
         var path = Path.Combine(directory, fileName);
-        File.WriteAllText(path, contents);
+        return File.WriteAllTextAsync(path, contents);
     }
 
     public bool DoesFileExist(string directory, string fileName)
@@ -49,9 +49,9 @@ public class Windows : IOperatingSystem
         }.Start();
     }
 
-    public IEnumerable<FileInfo> GetTemplateFilesFromDirectory(string directory)
+    public Task<IEnumerable<FileInfo>> GetTemplateFilesFromDirectory(string directory)
     {
-        var files = Directory.GetFiles(directory, "*.json");
-        return files.Select(f => new FileInfo(f));
+        var files = Directory.GetFiles(directory, "*.json").Select(f => new FileInfo(f));
+        return Task.FromResult(files);
     }
 }

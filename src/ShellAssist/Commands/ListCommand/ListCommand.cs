@@ -24,21 +24,21 @@ public class ListCommand : BaseCommand
         }
 
         var commandDirectory = config.GetCommandDirectory();
-        if (_os.DoesDirectoryExist(commandDirectory))
+        if (!_os.DoesDirectoryExist(commandDirectory))
         {
             NoCommandsFoundMessage(console);
             return;
         }
 
-        var files = _os.GetTemplateFilesFromDirectory(commandDirectory);
-        if (files.Any())
+        var files = await _os.GetTemplateFilesFromDirectory(commandDirectory);
+        if (!files.Any())
         {
             NoCommandsFoundMessage(console);
             return;
         }
 
         foreach (var file in files)
-            console.WriteListItem(file.Name);
+            console.WriteListItem(file.Name.Replace(".json", ""));
     }
 
     private void NoCommandsFoundMessage(IConsole console)

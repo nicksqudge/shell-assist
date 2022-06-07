@@ -5,8 +5,8 @@ namespace ShellAssist.Templates.Versions;
 
 public class Version1CommandTemplate : ICommandTemplate
 {
-    public string Start { get; set; }
-    public string[] Args { get; set; }
+    public string Start { get; set; } = string.Empty;
+    public string[] Args { get; set; } = new string[] { };
     public string ToCommand()
     {
         string result = Start;

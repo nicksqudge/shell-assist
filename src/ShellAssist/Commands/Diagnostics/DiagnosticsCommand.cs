@@ -18,7 +18,7 @@ public class DiagnosticsCommand : ICommand
         _os = os;
     }
 
-    public async ValueTask ExecuteAsync(IConsole console)
+    public ValueTask ExecuteAsync(IConsole console)
     {
         bool failed = false;
         
@@ -33,5 +33,7 @@ public class DiagnosticsCommand : ICommand
         
         if (failed == true)
             throw new CommandException("Diagnostics failed");
+            
+        return ValueTask.CompletedTask;
     }
 }

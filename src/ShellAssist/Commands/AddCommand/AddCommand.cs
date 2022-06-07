@@ -21,14 +21,14 @@ public class AddCommand : BaseCommand
     }
 
     [CommandParameter(0, Description = "The name of the command")]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     protected override async ValueTask ExecuteCommandAsync(IConsole console)
     {
         var config = GetShellConfig();
         string commandFileName = GetCommandFileName(config);
         ValidateName(commandFileName);
-        CreateFile(commandFileName, config);
+        await CreateFile(commandFileName, config);
     }
 
     private void ValidateName(string fileName)
@@ -61,7 +61,7 @@ public class AddCommand : BaseCommand
         return config;
     }
 
-    private void CreateFile(string file, ShellConfig config)
+    private async Task CreateFile(string file, ShellConfig config)
     {
         var directory = config.GetCommandDirectory();
         LogInfo($"Config directory: {directory}");
@@ -73,7 +73,7 @@ public class AddCommand : BaseCommand
         }
 
         var latestVersion = _templateVersionStore.FetchLatest();
-        _os.CreateFile(
+        await _os.CreateFile(
             directory, 
             file, 
             JsonConvert.SerializeObject(latestVersion, Formatting.Indented)

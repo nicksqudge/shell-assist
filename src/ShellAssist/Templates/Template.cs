@@ -8,5 +8,5 @@ public class Template
 public class Template<T> : Template
     where T : ICommandTemplate
 {
-    public T Command { get; set; }
+    public T Command { get; set; } = default!;
 }
