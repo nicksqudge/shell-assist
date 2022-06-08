@@ -1,4 +1,5 @@
 using System;
+using ShellAssist.Core;
 
 namespace ShellAssist.Tests.TestHelpers.Builders;
 
@@ -7,11 +8,11 @@ public class ShellConfigBuilder
     private bool _exists;
     private string _directory;
     
-    public static string BaseDir = "/test";
+    public static string BaseDir = "test";
 
     public static ShellConfigBuilder Typical()
         => new ShellConfigBuilder()
-            .SetDirectory("/test");
+            .SetDirectory(BaseDir);
 
     public ShellConfigBuilder SetDirectory(string dir)
     {

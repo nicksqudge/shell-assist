@@ -1,6 +1,6 @@
 using ShellAssist.Templates;
 
-namespace ShellAssist;
+namespace ShellAssist.Core;
 
 public class ShellConfig
 {
@@ -23,5 +23,5 @@ public class ShellConfig
     public string GetCommandDirectory() => Path.Combine(Directory, CommandDirectoryName);
 
     public CommandFile GetCommandFile(string commandName)
-        => new CommandFile(Directory, commandName);
+        => new CommandFile(GetCommandDirectory(), commandName);
 }
