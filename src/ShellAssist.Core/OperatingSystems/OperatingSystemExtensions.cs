@@ -18,4 +18,11 @@ public static class OperatingSystemExtensions
         var data = JsonConvert.SerializeObject(commandFile, Formatting.Indented);
         return operatingSystem.CreateFile(commandFile.Directory, commandFile.FileName, data, cancellationToken);
     }
+
+    public static Task OpenCommandFile(this IOperatingSystem operatingSystem, 
+        CommandFile commandFile,
+        CancellationToken cancellationToken)
+    {
+        return operatingSystem.OpenFile(commandFile.Directory, commandFile.FileName, cancellationToken);
+    }
 }

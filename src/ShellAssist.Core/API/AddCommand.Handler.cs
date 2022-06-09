@@ -62,6 +62,7 @@ internal class AddCommandHandler : ICommandHandler<AddCommand>
         var latestTemplate = _templateVersionStore.FetchLatest();
         await _operatingSystem.CreateCommandFile(commandFile, latestTemplate, cancellationToken);
         _console.WriteSuccess(_localisation.CommandCreated(commandFile));
+        await _operatingSystem.OpenCommandFile(commandFile, cancellationToken);
     }
 
     private async Task CreateDirectoryIfItDoesntExist(string directory, CancellationToken cancellationToken)

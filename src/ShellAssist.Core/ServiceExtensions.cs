@@ -26,7 +26,8 @@ public static class ServiceExtensions
         services
             .AddTransient<IOperatingSystem, Windows>()
             .AddTransient<ITemplateVersionStore, TemplateVersionStore>()
-            .AddTransient<ILocalisationHandler, EnglishHandler>();
+            .AddTransient<ILocalisationHandler, EnglishHandler>()
+            .AddTransient<IConsole, Console>();
         
         return services;
     }

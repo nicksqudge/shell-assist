@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DotnetCQRS;
 using DotnetCQRS.Extensions.FluentAssertions;
 using FluentAssertions;
 using NSubstitute;
-using NSubstitute.Extensions;
 using ShellAssist.Core;
 using ShellAssist.Core.API;
 using ShellAssist.Core.Localisations;
@@ -22,30 +19,32 @@ namespace ShellAssist.Tests.Commands;
 
 public class AddCommandTests
 {
-    private readonly AddCommand _command = new AddCommand();
-    private readonly AddCommandHandler handler;
-    private readonly List<string> _consoleOutput = new List<string>();
-    private readonly ILocalisationHandler _localisation = new EnglishHandler();
-    private readonly List<string> _createdFiles = new List<string>();
-    private readonly List<string> _createdDirectories = new List<string>();
-    private readonly IOperatingSystem _os = Substitute.For<IOperatingSystem>();
+    private readonly AddCommand _command = new();
+
     private readonly string _commandDirectory =
         Path.Combine(ShellConfigBuilder.BaseDir, ShellConfig.CommandDirectoryName);
+
+    private readonly List<string> _consoleOutput = new();
+    private readonly List<string> _createdDirectories = new();
+    private readonly List<string> _createdFiles = new();
+    private readonly ILocalisationHandler _localisation = new EnglishHandler();
+    private readonly IOperatingSystem _os = Substitute.For<IOperatingSystem>();
+    private readonly AddCommandHandler handler;
 
     public AddCommandTests()
     {
         var console = new FakeConsole(line => _consoleOutput.Add(line));
-        
+
         _os.WhenForAnyArgs(x => x.CreateFile(default, default, default, default))
-            .Do((input) => _createdFiles.Add(Path.Combine(input.ArgAt<string>(0), input.ArgAt<string>(1))));
-        
+            .Do(input => _createdFiles.Add(Path.Combine(input.ArgAt<string>(0), input.ArgAt<string>(1))));
+
         _os.WhenForAnyArgs(x => x.CreateDirectory(default, default))
             .Do(input => _createdDirectories.Add(input.ArgAt<string>(0)));
 
         handler = new AddCommandHandler(
-            _os, 
-            console, 
-            _localisation, 
+            _os,
+            console,
+            _localisation,
             new AddCommandValidator(),
             new TemplateVersionStore()
         );
@@ -60,7 +59,7 @@ public class AddCommandTests
     {
         var fileInfo = new FileInfo(Path.Combine(_commandDirectory, $"{name}.json"));
         var file = new CommandFile(fileInfo);
-        
+
         _consoleOutput.Should().Contain(_localisation.CommandCreated(file));
         _createdFiles.Should().Contain(file.ToString());
     }
@@ -89,7 +88,7 @@ public class AddCommandTests
             .ReturnsForAnyArgs(false);
 
         var result = await Run();
-        
+
         result.Should().BeSuccess();
         _createdDirectories.Should().Contain(_commandDirectory);
     }
@@ -103,7 +102,7 @@ public class AddCommandTests
             .ReturnsForAnyArgs(true);
 
         var result = await Run();
-        
+
         result.Should().BeSuccess();
         _createdDirectories.Should().NotContain(_commandDirectory);
     }
@@ -115,7 +114,7 @@ public class AddCommandTests
         _os.GetConfig().ReturnsForAnyArgs(ShellConfigBuilder.Typical().Build());
 
         var result = await Run();
-        
+
         result.Should().BeSuccess();
         ShouldHaveCreatedCommandFile("simple-command");
     }
@@ -132,7 +131,7 @@ public class AddCommandTests
         _os.GetConfig().ReturnsForAnyArgs(ShellConfigBuilder.Typical().Build());
 
         var result = await Run();
-        
+
         result.Should().BeSuccess();
         ShouldHaveCreatedCommandFile(expectedName);
     }
@@ -145,9 +144,21 @@ public class AddCommandTests
         _os.DoesFileExist(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(true);
 
         var result = await Run();
-        
+
         result.Should().BeFailure();
-        _consoleOutput.Should().Contain(_localisation.CommandExists(new CommandFile(_commandDirectory, "simple-command")));
+        _consoleOutput.Should()
+            .Contain(_localisation.CommandExists(new CommandFile(_commandDirectory, "simple-command")));
         _createdFiles.Should().NotContain(ShellConfigBuilder.BaseDir + "/simple-command.json");
+    }
+
+    [Fact]
+    public async Task ShouldOpenCommand()
+    {
+        _command.Name = "simple-command";
+        _os.GetConfig().ReturnsForAnyArgs(ShellConfigBuilder.Typical().Build());
+
+        var result = await Run();
+        
+        await _os.ReceivedWithAnyArgs().OpenFile(default, default, default);
     }
 }

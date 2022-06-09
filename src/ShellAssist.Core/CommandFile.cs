@@ -5,8 +5,8 @@ public class CommandFile
     public string Directory { get; private set; }
     public string FileName { get; private set; }
     public string Name { get; private set; }
-    
-    private string _filePath = string.Empty;
+
+    private readonly string _filePath;
 
     public CommandFile(string directory, string commandName)
     {
@@ -26,7 +26,7 @@ public class CommandFile
         _filePath = file.ToString();
         
         FileName = file.Name;
-        Directory = file.Directory.ToString();
+        Directory = file.Directory?.ToString() ?? "";
         Name = Path.GetFileNameWithoutExtension(file.Name);
     }
 

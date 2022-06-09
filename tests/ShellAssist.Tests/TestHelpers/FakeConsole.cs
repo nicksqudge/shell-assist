@@ -27,4 +27,9 @@ public class FakeConsole : IConsole
     {
         this.writeMethod.Invoke(text);
     }
+
+    public void WriteListItem(string text)
+    {
+        this.writeMethod.Invoke(text);
+    }
 }
