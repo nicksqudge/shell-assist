@@ -29,7 +29,7 @@ public class AddCommandTests
     private readonly List<string> _createdFiles = new();
     private readonly ILocalisationHandler _localisation = new EnglishHandler();
     private readonly IOperatingSystem _os = Substitute.For<IOperatingSystem>();
-    private readonly AddCommandHandler handler;
+    private readonly AddCommandHandler _handler;
 
     public AddCommandTests()
     {
@@ -41,18 +41,18 @@ public class AddCommandTests
         _os.WhenForAnyArgs(x => x.CreateDirectory(default, default))
             .Do(input => _createdDirectories.Add(input.ArgAt<string>(0)));
 
-        handler = new AddCommandHandler(
+        _handler = new AddCommandHandler(
             _os,
             console,
             _localisation,
-            new AddCommandValidator(),
+            new AddCommandValidator(_os, _localisation),
             new TemplateVersionStore()
         );
     }
 
     private Task<Result> Run()
     {
-        return handler.HandleAsync(_command, CancellationToken.None);
+        return _handler.HandleAsync(_command, CancellationToken.None);
     }
 
     private void ShouldHaveCreatedCommandFile(string name)
@@ -71,6 +71,8 @@ public class AddCommandTests
     public async Task InvalidCommandName(string input)
     {
         _command.Name = input;
+        _os.GetConfig().ReturnsForAnyArgs(ShellConfigBuilder.Typical().Build());
+        _os.DoesFileExist(default, default, default).ReturnsForAnyArgs(false);
 
         var result = await Run();
 

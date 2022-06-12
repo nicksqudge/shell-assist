@@ -2,14 +2,16 @@ namespace ShellAssist.Templates;
 
 public class CommandFile
 {
-    public string Directory { get; private set; }
-    public string FileName { get; private set; }
-    public string Name { get; private set; }
-
-    private readonly string _filePath;
+    public readonly string Directory = string.Empty;
+    public readonly string FileName = string.Empty;
+    public readonly string Name = string.Empty;
+    private readonly string _filePath = string.Empty;
 
     public CommandFile(string directory, string commandName)
     {
+        if (string.IsNullOrWhiteSpace(commandName))
+            return;
+        
         if (commandName.EndsWith(".json"))
             commandName = commandName.Replace(".json", "");
         

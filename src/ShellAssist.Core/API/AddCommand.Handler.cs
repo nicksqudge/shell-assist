@@ -30,21 +30,12 @@ internal class AddCommandHandler : ICommandHandler<AddCommand>
 
     public async Task<Result> HandleAsync(AddCommand command, CancellationToken cancellationToken)
     {
-        var isValid = await _validator.ValidateAsync(command, cancellationToken);
-        if (isValid.IsValid == false)
-        {
-            _console.WriteError(_localisation.InvalidCommandName());
-            return Result.Failure("InvalidCommandName");
-        }
+        var validationResult = await _validator.ValidateAndOutput(command, _console, cancellationToken);
+        if (validationResult != null)
+            return validationResult;
         
         var config = await SetupOrGetConfig(cancellationToken);
         var commandFile = config.GetCommandFile(command.Name);
-        if (await _operatingSystem.DoesCommandFileExist(commandFile, cancellationToken))
-        {
-            _console.WriteError(_localisation.CommandExists(commandFile));
-            return Result.Failure("CommandFileExists");
-        }
-
         await WriteCommandFile(commandFile, cancellationToken);
         return Result.Success();
     }

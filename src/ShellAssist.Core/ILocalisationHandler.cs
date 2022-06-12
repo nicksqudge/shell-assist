@@ -2,7 +2,7 @@ using ShellAssist.Templates;
 
 namespace ShellAssist.Core;
 
-internal interface ILocalisationHandler
+public interface ILocalisationHandler
 {
     string InvalidCommandName();
 

@@ -1,11 +1,14 @@
 using FluentValidation;
+using ShellAssist.Core.OperatingSystems;
 
 namespace ShellAssist.Core.API;
 
 public class AddCommandValidator : AbstractValidator<AddCommand>
 {
-    public AddCommandValidator()
+    public AddCommandValidator(IOperatingSystem operatingSystem, ILocalisationHandler localisationHandler)
     {
-        RuleFor(x => x.Name).NotEmpty().NotNull();
+        RuleFor(x => x.Name)
+            .MustBeValidCommandName(localisationHandler)
+            .MustBeNonExistentCommand(operatingSystem, localisationHandler);
     }
 }
