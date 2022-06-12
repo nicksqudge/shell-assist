@@ -1,4 +1,3 @@
-using System.CommandLine.Invocation;
 using DotnetCQRS;
 using DotnetCQRS.Commands;
 using FluentValidation;
@@ -6,14 +5,14 @@ using ShellAssist.Core.OperatingSystems;
 
 namespace ShellAssist.Core.API;
 
-public class EditCommandHandler : ICommandHandler<EditCommand>
+public class DeleteCommandHandler : ICommandHandler<DeleteCommand>
 {
-    private readonly IValidator<EditCommand> _validator;
+    private readonly IValidator<DeleteCommand> _validator;
     private readonly IConsole _console;
     private readonly IOperatingSystem _operatingSystem;
     private readonly ILocalisationHandler _localisationHandler;
 
-    public EditCommandHandler(IValidator<EditCommand> validator, IConsole console, IOperatingSystem operatingSystem, ILocalisationHandler localisationHandler)
+    public DeleteCommandHandler(IValidator<DeleteCommand> validator, IConsole console, IOperatingSystem operatingSystem, ILocalisationHandler localisationHandler)
     {
         _validator = validator;
         _console = console;
@@ -21,7 +20,7 @@ public class EditCommandHandler : ICommandHandler<EditCommand>
         _localisationHandler = localisationHandler;
     }
 
-    public async Task<Result> HandleAsync(EditCommand command, CancellationToken cancellationToken)
+    public async Task<Result> HandleAsync(DeleteCommand command, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAndOutput(command, _console, cancellationToken);
         if (validationResult != null)
@@ -31,8 +30,8 @@ public class EditCommandHandler : ICommandHandler<EditCommand>
             .GetConfig()
             .GetCommandFile(command.Name);
 
-        await _operatingSystem.OpenCommandFile(commandFile, cancellationToken);
-        _console.WriteSuccess(_localisationHandler.CommandFound(commandFile));
+        await _operatingSystem.DeleteCommandFile(commandFile, cancellationToken);
+        _console.WriteSuccess(_localisationHandler.CommandDeleted(commandFile));
         return Result.Success();
     }
 }

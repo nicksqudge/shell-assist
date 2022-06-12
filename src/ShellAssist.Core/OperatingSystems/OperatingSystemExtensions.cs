@@ -15,7 +15,7 @@ public static class OperatingSystemExtensions
         Template template, 
         CancellationToken cancellationToken)
     {
-        var data = JsonConvert.SerializeObject(commandFile, Formatting.Indented);
+        var data = JsonConvert.SerializeObject(template, Formatting.Indented);
         return operatingSystem.CreateFile(commandFile.Directory, commandFile.FileName, data, cancellationToken);
     }
 
@@ -24,5 +24,12 @@ public static class OperatingSystemExtensions
         CancellationToken cancellationToken)
     {
         return operatingSystem.OpenFile(commandFile.Directory, commandFile.FileName, cancellationToken);
+    }
+
+    public static Task DeleteCommandFile(this IOperatingSystem operatingSystem,
+        CommandFile commandFile,
+        CancellationToken cancellationToken)
+    {
+        return operatingSystem.DeleteFile(commandFile.Directory, commandFile.FileName, cancellationToken);
     }
 }

@@ -18,4 +18,14 @@ internal class EnglishHandler : ILocalisationHandler
     {
         return $"Command {command.Name} already exists";
     }
+
+    public string CommandDeleted(CommandFile command)
+    {
+        return $"Command {command.Name} was deleted";
+    }
+
+    public string CommandFound(CommandFile command)
+    {
+        return $"Command {command.Name} was found... opening file...";
+    }
 }

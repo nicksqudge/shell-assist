@@ -49,6 +49,14 @@ public class Windows : IOperatingSystem
         return Task.CompletedTask;
     }
 
+    public async Task DeleteFile(string directory, string fileName, CancellationToken cancellationToken)
+    {
+        var exists = await DoesFileExist(directory, fileName, cancellationToken);
+        
+        if (exists)
+            File.Delete(Path.Combine(directory, fileName));
+    }
+
     public Task<IEnumerable<FileInfo>> GetTemplateFilesFromDirectory(string directory, CancellationToken cancellationToken)
     {
         var files = Directory.GetFiles(directory, "*.json").Select(f => new FileInfo(f));

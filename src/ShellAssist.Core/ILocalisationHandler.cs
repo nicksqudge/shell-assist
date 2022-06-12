@@ -9,4 +9,8 @@ public interface ILocalisationHandler
     string CommandCreated(CommandFile command);
 
     string CommandExists(CommandFile command);
+
+    string CommandDeleted(CommandFile command);
+
+    string CommandFound(CommandFile command);
 }

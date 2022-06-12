@@ -18,19 +18,22 @@ public class TemplateVersionStore : ITemplateVersionStore
 
     public Template FetchLatest()
     {
-        var baseCommand = new Version1CommandTemplate()
-        {
-            Args = new string []
-            {
-                "www.google.com"
-            },
-            Start = "ping"
-        };
+        var baseCommand = new Version1CommandTemplate();
 
         return new Template<Version1CommandTemplate>()
         {
             Version = 1,
-            Command = baseCommand
+            Command = new Version1CommandTemplate()
+            {
+                Commands = new List<Version1CommandTemplate.SingleCommand>()
+                {
+                    new Version1CommandTemplate.SingleCommand()
+                    {
+                        Start = "ping",
+                        Args = new []{ "www.google.com" }
+                    }
+                }
+            }
         };
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using ShellAssist.Core.Versions;
@@ -47,10 +48,12 @@ public class TemplateLoaderTests
         var content = @"{
             'version': 1,
             'command': {
-                'start': 'ping',
-                'args': [
-                    'www.google.com'
-                ]
+                'commands': [{
+                    'start': 'ping',
+                    'args': [
+                        'www.google.com'
+                    ]
+                }]
             }
         }";
 
@@ -60,6 +63,11 @@ public class TemplateLoaderTests
         var templateLoader = new TemplateLoader(supportedTemplates);
         var template = templateLoader.LoadTemplate(content);
         template.Should().BeOfType<Version1CommandTemplate>();
-        template.ToCommand().Should().Be("ping www.google.com");
+        ((Version1CommandTemplate) template).Commands.First().Should().BeEquivalentTo(
+            new Version1CommandTemplate.SingleCommand()
+            {
+                Args = new[] {"www.google.com"},
+                Start = "ping"
+            });
     }
 }

@@ -34,4 +34,13 @@ editCommand.SetHandler(async context => await services.RunCommand(context, conte
 }));
 rootCommand.Add(editCommand);
 
+var deleteCommand = new Command("delete", "Delete a command file");
+deleteCommand.Add(commandNameArgument);
+deleteCommand.AddAlias("d");
+deleteCommand.SetHandler(async context => await services.RunCommand(context, context => new DeleteCommand()
+{
+    Name = context.ParseResult.GetValueForArgument(commandNameArgument)
+}));
+rootCommand.Add(deleteCommand);
+
 return rootCommand.Invoke(args);
