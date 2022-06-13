@@ -1,8 +1,6 @@
-using ShellAssist.Templates;
+namespace ShellAssist.Core.ShellCommands.Versions;
 
-namespace ShellAssist.Core.Versions;
-
-public class Version1CommandTemplate : ICommandTemplate
+public class Version1ShellCommandTemplate : IShellCommandTemplate
 {
     public ICollection<SingleCommand> Commands { get; set; }
 

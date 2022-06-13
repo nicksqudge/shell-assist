@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using ShellAssist.Templates;
 
 namespace ShellAssist.Core.OperatingSystems;
 
@@ -12,10 +11,10 @@ public static class OperatingSystemExtensions
 
     public static Task CreateCommandFile(this IOperatingSystem operatingSystem, 
         CommandFile commandFile,
-        Template template, 
+        CommandFileJson commandFileJson, 
         CancellationToken cancellationToken)
     {
-        var data = JsonConvert.SerializeObject(template, Formatting.Indented);
+        var data = JsonConvert.SerializeObject(commandFileJson, Formatting.Indented);
         return operatingSystem.CreateFile(commandFile.Directory, commandFile.FileName, data, cancellationToken);
     }
 
@@ -31,5 +30,12 @@ public static class OperatingSystemExtensions
         CancellationToken cancellationToken)
     {
         return operatingSystem.DeleteFile(commandFile.Directory, commandFile.FileName, cancellationToken);
+    }
+    
+    public static Task<string> ReadCommandFile(this IOperatingSystem operatingSystem,
+        CommandFile commandFile,
+        CancellationToken cancellationToken)
+    {
+        return operatingSystem.ReadAllFileContents(commandFile.Directory, commandFile.FileName, cancellationToken);
     }
 }

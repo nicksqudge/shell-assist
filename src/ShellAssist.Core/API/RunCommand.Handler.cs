@@ -2,22 +2,23 @@ using DotnetCQRS;
 using DotnetCQRS.Commands;
 using FluentValidation;
 using ShellAssist.Core.OperatingSystems;
+using ShellAssist.Core.ShellCommands;
 
 namespace ShellAssist.Core.API;
 
 public class RunCommandHandler : ICommandHandler<RunCommand>
 {
     private readonly IValidator<RunCommand> _validator;
-    private readonly IConsole _console;
     private readonly IOperatingSystem _operatingSystem;
-    private readonly ILocalisationHandler _localisationHandler;
+    private readonly IShellCommandVersionStore _versionStore;
+    private readonly IConsole _console;
 
-    public RunCommandHandler(IValidator<RunCommand> validator, IConsole console, IOperatingSystem operatingSystem, ILocalisationHandler localisationHandler)
+    public RunCommandHandler(IValidator<RunCommand> validator, IOperatingSystem operatingSystem, IShellCommandVersionStore versionStore, IConsole console)
     {
         _validator = validator;
-        _console = console;
         _operatingSystem = operatingSystem;
-        _localisationHandler = localisationHandler;
+        _versionStore = versionStore;
+        _console = console;
     }
 
     public async Task<Result> HandleAsync(RunCommand command, CancellationToken cancellationToken)
@@ -25,6 +26,12 @@ public class RunCommandHandler : ICommandHandler<RunCommand>
         var validationResult = await _validator.ValidateAndOutput(command, _console, cancellationToken);
         if (validationResult != null)
             return validationResult;
+
+        var commandFile = _operatingSystem.GetConfig().GetCommandFile(command.Name);
+        var shellLoader = new ShellTemplateLoader(_versionStore.FetchAllVersions());
+        string contents = await _operatingSystem.ReadCommandFile(commandFile, cancellationToken);
+        
+        
 
         return Result.Success();
     }

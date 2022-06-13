@@ -1,11 +1,9 @@
-using ShellAssist.Templates;
-
 namespace ShellAssist.Core;
 
 public class ShellConfig
 {
     public static string CommandDirectoryName = "Commands";
-    
+
     public ShellConfig(DirectoryInfo directory)
     {
         Exists = directory.Exists;
@@ -14,14 +12,18 @@ public class ShellConfig
 
     public ShellConfig()
     {
-        
     }
-    
+
     public bool Exists { get; set; }
     public string Directory { get; set; } = string.Empty;
-    
-    public string GetCommandDirectory() => Path.Combine(Directory, CommandDirectoryName);
+
+    public string GetCommandDirectory()
+    {
+        return Path.Combine(Directory, CommandDirectoryName);
+    }
 
     public CommandFile GetCommandFile(string commandName)
-        => new CommandFile(GetCommandDirectory(), commandName);
+    {
+        return new(GetCommandDirectory(), commandName);
+    }
 }

@@ -57,6 +57,17 @@ public class Windows : IOperatingSystem
             File.Delete(Path.Combine(directory, fileName));
     }
 
+    public async Task<string> ReadAllFileContents(string directory, string fileName, CancellationToken cancellationToken)
+    {
+        var exists = await DoesFileExist(directory, fileName, cancellationToken);
+
+        if (!exists)
+            throw new Exception($"Could not find file for reading: {Path.Combine(directory, fileName)}");    
+            
+        var path = Path.Combine(directory, fileName);
+        return File.ReadAllText(path);
+    }
+
     public Task<IEnumerable<FileInfo>> GetTemplateFilesFromDirectory(string directory, CancellationToken cancellationToken)
     {
         var files = Directory.GetFiles(directory, "*.json").Select(f => new FileInfo(f));

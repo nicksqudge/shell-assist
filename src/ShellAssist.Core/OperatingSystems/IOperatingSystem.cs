@@ -9,5 +9,6 @@ public interface IOperatingSystem
     Task<bool> DoesDirectoryExist(string directory, CancellationToken cancellationToken);
     Task OpenFile(string directory, string fileName, CancellationToken cancellationToken);
     Task DeleteFile(string directory, string fileName, CancellationToken cancellationToken);
+    Task<string> ReadAllFileContents(string directory, string fileName, CancellationToken cancellationToken);
     Task<IEnumerable<FileInfo>> GetTemplateFilesFromDirectory(string directory, CancellationToken cancellationToken);
 }

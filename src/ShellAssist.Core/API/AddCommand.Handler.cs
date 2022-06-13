@@ -2,7 +2,7 @@ using DotnetCQRS;
 using DotnetCQRS.Commands;
 using FluentValidation;
 using ShellAssist.Core.OperatingSystems;
-using ShellAssist.Templates;
+using ShellAssist.Core.ShellCommands;
 
 namespace ShellAssist.Core.API;
 
@@ -12,20 +12,20 @@ internal class AddCommandHandler : ICommandHandler<AddCommand>
     private readonly IConsole _console;
     private readonly ILocalisationHandler _localisation;
     private readonly IValidator<AddCommand> _validator;
-    private readonly ITemplateVersionStore _templateVersionStore;
+    private readonly IShellCommandVersionStore _shellCommandVersionStore;
 
     public AddCommandHandler(
         IOperatingSystem operatingSystem, 
         IConsole console, 
         ILocalisationHandler localisation,
         IValidator<AddCommand> validator, 
-        ITemplateVersionStore templateVersionStore)
+        IShellCommandVersionStore shellCommandVersionStore)
     {
         _operatingSystem = operatingSystem;
         _console = console;
         _localisation = localisation;
         _validator = validator;
-        _templateVersionStore = templateVersionStore;
+        _shellCommandVersionStore = shellCommandVersionStore;
     }
 
     public async Task<Result> HandleAsync(AddCommand command, CancellationToken cancellationToken)
@@ -50,7 +50,7 @@ internal class AddCommandHandler : ICommandHandler<AddCommand>
 
     private async Task WriteCommandFile(CommandFile commandFile, CancellationToken cancellationToken)
     {
-        var latestTemplate = _templateVersionStore.FetchLatest();
+        var latestTemplate = _shellCommandVersionStore.FetchLatest();
         await _operatingSystem.CreateCommandFile(commandFile, latestTemplate, cancellationToken);
         _console.WriteSuccess(_localisation.CommandCreated(commandFile));
         await _operatingSystem.OpenCommandFile(commandFile, cancellationToken);

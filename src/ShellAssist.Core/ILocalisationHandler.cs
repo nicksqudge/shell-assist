@@ -1,5 +1,3 @@
-using ShellAssist.Templates;
-
 namespace ShellAssist.Core;
 
 public interface ILocalisationHandler

@@ -10,7 +10,7 @@ using ShellAssist.Core;
 using ShellAssist.Core.API;
 using ShellAssist.Core.Localisations;
 using ShellAssist.Core.OperatingSystems;
-using ShellAssist.Templates;
+using ShellAssist.Core.ShellCommands;
 using ShellAssist.Tests.TestHelpers;
 using ShellAssist.Tests.TestHelpers.Builders;
 using Xunit;
@@ -46,7 +46,7 @@ public class AddCommandTests
             console,
             _localisation,
             new AddCommandValidator(_os, _localisation),
-            new TemplateVersionStore()
+            new ShellCommandVersionStore()
         );
     }
 

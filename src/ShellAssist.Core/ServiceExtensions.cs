@@ -1,13 +1,13 @@
 using System.Runtime.CompilerServices;
 using DotnetCQRS.Extensions.Microsoft.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using ShellAssist.Core.API;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using ShellAssist.Core.Localisations;
 using ShellAssist.Core.OperatingSystems;
-using ShellAssist.Templates;
+using ShellAssist.Core.ShellCommands;
 
 [assembly: InternalsVisibleTo("ShellAssist.Tests")]
+
 namespace ShellAssist.Core;
 
 public static class ServiceExtensions
@@ -15,7 +15,7 @@ public static class ServiceExtensions
     public static IServiceCollection AddShellAssist(this IServiceCollection services)
     {
         var assembly = typeof(ServiceExtensions).Assembly;
-        
+
         services
             .AddDotnetCqrs()
             .AddDefaultCommandDispatcher()
@@ -25,10 +25,10 @@ public static class ServiceExtensions
 
         services
             .AddTransient<IOperatingSystem, Windows>()
-            .AddTransient<ITemplateVersionStore, TemplateVersionStore>()
+            .AddTransient<IShellCommandVersionStore, ShellCommandVersionStore>()
             .AddTransient<ILocalisationHandler, EnglishHandler>()
             .AddTransient<IConsole, Console>();
-        
+
         return services;
     }
 }

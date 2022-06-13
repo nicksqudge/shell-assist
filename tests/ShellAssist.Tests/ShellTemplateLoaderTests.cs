@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using ShellAssist.Core.Versions;
-using ShellAssist.Templates;
+using ShellAssist.Core;
+using ShellAssist.Core.ShellCommands;
+using ShellAssist.Core.ShellCommands.Versions;
 using Xunit;
 
 namespace ShellAssist.Tests;
 
-public class TemplateLoaderTests
+public class ShellTemplateLoaderTests
 {
     [Fact]
     public async Task InvalidTemplate()
@@ -20,11 +21,11 @@ public class TemplateLoaderTests
         }";
 
         var supportedTemplates = new Dictionary<int, Type>();
-        supportedTemplates.Add(1, typeof(Version1CommandTemplate));
+        supportedTemplates.Add(1, typeof(Version1ShellCommandTemplate));
 
-        var templateLoader = new TemplateLoader(supportedTemplates);
-        var template = templateLoader.LoadTemplate(content);
-        template.Should().BeNull();
+        var templateLoader = new ShellTemplateLoader(supportedTemplates);
+        var result = templateLoader.LoadTemplate(content);
+        result.Should().BeNull();
     }
 
     [Fact]
@@ -37,9 +38,9 @@ public class TemplateLoaderTests
 
         var supportedTemplates = new Dictionary<int, Type>();
 
-        var templateLoader = new TemplateLoader(supportedTemplates);
-        var template = templateLoader.LoadTemplate(content);
-        template.Should().BeNull();
+        var templateLoader = new ShellTemplateLoader(supportedTemplates);
+        var result = templateLoader.LoadTemplate(content);
+        result.Should().BeNull();
     }
 
     [Fact]
@@ -58,13 +59,16 @@ public class TemplateLoaderTests
         }";
 
         var supportedTemplates = new Dictionary<int, Type>();
-        supportedTemplates.Add(1, typeof(Version1CommandTemplate));
+        supportedTemplates.Add(1, typeof(Version1ShellCommandTemplate));
 
-        var templateLoader = new TemplateLoader(supportedTemplates);
-        var template = templateLoader.LoadTemplate(content);
-        template.Should().BeOfType<Version1CommandTemplate>();
-        ((Version1CommandTemplate) template).Commands.First().Should().BeEquivalentTo(
-            new Version1CommandTemplate.SingleCommand()
+        var templateLoader = new ShellTemplateLoader(supportedTemplates);
+        var result = templateLoader.LoadTemplate(content);
+        result.Should().NotBeNull();
+        result.Version.Should().Be(1);
+        result.Command.Should().NotBeNull();
+        var commands = ((Version1ShellCommandTemplate) result.Command).Commands;
+        commands.First().Should().BeEquivalentTo(
+            new Version1ShellCommandTemplate.SingleCommand()
             {
                 Args = new[] {"www.google.com"},
                 Start = "ping"

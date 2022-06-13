@@ -1,4 +1,4 @@
-namespace ShellAssist.Templates;
+namespace ShellAssist.Core;
 
 public class CommandFile
 {
