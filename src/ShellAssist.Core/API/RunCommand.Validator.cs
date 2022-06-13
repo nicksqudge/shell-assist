@@ -3,7 +3,7 @@ using ShellAssist.Core.OperatingSystems;
 
 namespace ShellAssist.Core.API;
 
-public class RunCommandValidator : AbstractValidator<EditCommand>
+public class RunCommandValidator : AbstractValidator<RunCommand>
 {
     public RunCommandValidator(IOperatingSystem operatingSystem, ILocalisationHandler localisationHandler)
     {

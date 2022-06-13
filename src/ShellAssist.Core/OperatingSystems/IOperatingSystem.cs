@@ -10,5 +10,6 @@ public interface IOperatingSystem
     Task OpenFile(string directory, string fileName, CancellationToken cancellationToken);
     Task DeleteFile(string directory, string fileName, CancellationToken cancellationToken);
     Task<string> ReadAllFileContents(string directory, string fileName, CancellationToken cancellationToken);
+    Task<string> ExecutingCommand(string command, string[] args);
     Task<IEnumerable<FileInfo>> GetTemplateFilesFromDirectory(string directory, CancellationToken cancellationToken);
 }

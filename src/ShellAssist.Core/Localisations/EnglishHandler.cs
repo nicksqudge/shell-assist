@@ -26,4 +26,24 @@ internal class EnglishHandler : ILocalisationHandler
     {
         return $"Command {command.Name} was found... opening file...";
     }
+
+    public string CommandFound(CommandFile command, int version)
+    {
+        return $"Command {command.Name} v{version} loaded";
+    }
+
+    public string InvalidCommandFile()
+    {
+        return "Invalid command file";
+    }
+
+    public string InvalidCommandTemplateVersion()
+    {
+        return "Invalid command template version";
+    }
+
+    public string ExecutingCommand(string command, string[] args)
+    {
+        return $"Executing command: {command} {string.Join(' ', args)}";
+    }
 }

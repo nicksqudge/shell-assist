@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShellAssist.Core.Localisations;
 using ShellAssist.Core.OperatingSystems;
 using ShellAssist.Core.ShellCommands;
+using ShellAssist.Core.ShellCommands.Versions;
 
 [assembly: InternalsVisibleTo("ShellAssist.Tests")]
 
@@ -27,7 +28,8 @@ public static class ServiceExtensions
             .AddTransient<IOperatingSystem, Windows>()
             .AddTransient<IShellCommandVersionStore, ShellCommandVersionStore>()
             .AddTransient<ILocalisationHandler, EnglishHandler>()
-            .AddTransient<IConsole, Console>();
+            .AddTransient<IConsole, Console>()
+            .AddTransient<IShellCommandHandler<Version1ShellCommandTemplate>, Version1ShellCommandHandler>();
 
         return services;
     }

@@ -13,7 +13,7 @@ namespace ShellAssist.Tests;
 public class ShellTemplateLoaderTests
 {
     [Fact]
-    public async Task InvalidTemplate()
+    public void InvalidTemplate()
     {
         var content = @"{
             'version': 2,
@@ -29,7 +29,7 @@ public class ShellTemplateLoaderTests
     }
 
     [Fact]
-    public async Task UnsupportedTemplate()
+    public void UnsupportedTemplate()
     {
         var content = @"{
             'version': 1,
@@ -43,8 +43,24 @@ public class ShellTemplateLoaderTests
         result.Should().BeNull();
     }
 
+    [Theory]
+    [InlineData(@"[{
+            'version': 1,
+            'command': 'Something here'
+        }]")]
+    [InlineData("{asdasd}")]
+    [InlineData("aspodmasdpom")]
+    public void InvalidData(string content)
+    {
+        var supportedTemplates = new Dictionary<int, Type>();
+
+        var templateLoader = new ShellTemplateLoader(supportedTemplates);
+        var result = templateLoader.LoadTemplate(content);
+        result.Should().BeNull();
+    }
+
     [Fact]
-    public async Task Version1Template()
+    public void Version1Template()
     {
         var content = @"{
             'version': 1,
@@ -64,14 +80,6 @@ public class ShellTemplateLoaderTests
         var templateLoader = new ShellTemplateLoader(supportedTemplates);
         var result = templateLoader.LoadTemplate(content);
         result.Should().NotBeNull();
-        result.Version.Should().Be(1);
-        result.Command.Should().NotBeNull();
-        var commands = ((Version1ShellCommandTemplate) result.Command).Commands;
-        commands.First().Should().BeEquivalentTo(
-            new Version1ShellCommandTemplate.SingleCommand()
-            {
-                Args = new[] {"www.google.com"},
-                Start = "ping"
-            });
+        result.Should().Be(typeof(Version1ShellCommandTemplate));
     }
 }

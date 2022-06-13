@@ -68,6 +68,19 @@ public class Windows : IOperatingSystem
         return File.ReadAllText(path);
     }
 
+    public async Task<string> ExecutingCommand(string command, string[] args)
+    {
+        var cmd = new Process();
+        cmd.StartInfo.FileName = $"{command}.exe";
+        cmd.StartInfo.CreateNoWindow = true;
+        cmd.StartInfo.UseShellExecute = false;
+        cmd.Start();
+        
+        string output = cmd.StandardOutput.ReadToEnd();
+        await cmd.WaitForExitAsync();
+        return output;
+    }
+
     public Task<IEnumerable<FileInfo>> GetTemplateFilesFromDirectory(string directory, CancellationToken cancellationToken)
     {
         var files = Directory.GetFiles(directory, "*.json").Select(f => new FileInfo(f));

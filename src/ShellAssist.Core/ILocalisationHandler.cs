@@ -11,4 +11,12 @@ public interface ILocalisationHandler
     string CommandDeleted(CommandFile command);
 
     string CommandFound(CommandFile command);
+
+    string CommandFound(CommandFile command, int version);
+
+    string InvalidCommandFile();
+
+    string InvalidCommandTemplateVersion();
+
+    string ExecutingCommand(string command, string[] args);
 }

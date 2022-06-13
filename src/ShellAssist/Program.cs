@@ -43,4 +43,13 @@ deleteCommand.SetHandler(async context => await services.RunCommand(context, con
 }));
 rootCommand.Add(deleteCommand);
 
+var runCommand = new Command("run", "Run a command");
+runCommand.Add(commandNameArgument);
+runCommand.AddAlias("r");
+runCommand.SetHandler(async context => await services.RunCommand(context, context => new RunCommand()
+{
+    Name = context.ParseResult.GetValueForArgument(commandNameArgument)
+}));
+rootCommand.Add(runCommand);
+
 return rootCommand.Invoke(args);
