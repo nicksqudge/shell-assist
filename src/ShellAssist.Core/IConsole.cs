@@ -6,6 +6,8 @@ public interface IConsole
     void WriteSuccess(string text);
     void WriteError(string text);
     void WriteListItem(string text);
+    void WriteInfo(string text);
+    void NewLine();
 }
 
 public class Console : IConsole
@@ -36,5 +38,15 @@ public class Console : IConsole
         System.Console.ForegroundColor = colour;
         System.Console.WriteLine(text);
         System.Console.ForegroundColor = original;
+    }
+
+    public void WriteInfo(string text)
+    {
+        WriteLineInColour(text, ConsoleColor.Cyan);
+    }
+
+    public void NewLine()
+    {
+        System.Console.WriteLine("");
     }
 }

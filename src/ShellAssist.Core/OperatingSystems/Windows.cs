@@ -20,7 +20,7 @@ public class Windows : IOperatingSystem
     {
         if (Directory.Exists(directory) == false)
             await CreateDirectory(directory, cancellationToken);
-        
+
         var path = Path.Combine(directory, fileName);
         await File.WriteAllTextAsync(path, contents);
     }
@@ -52,7 +52,7 @@ public class Windows : IOperatingSystem
     public async Task DeleteFile(string directory, string fileName, CancellationToken cancellationToken)
     {
         var exists = await DoesFileExist(directory, fileName, cancellationToken);
-        
+
         if (exists)
             File.Delete(Path.Combine(directory, fileName));
     }
@@ -62,23 +62,39 @@ public class Windows : IOperatingSystem
         var exists = await DoesFileExist(directory, fileName, cancellationToken);
 
         if (!exists)
-            throw new Exception($"Could not find file for reading: {Path.Combine(directory, fileName)}");    
-            
+            throw new Exception($"Could not find file for reading: {Path.Combine(directory, fileName)}");
+
         var path = Path.Combine(directory, fileName);
         return File.ReadAllText(path);
     }
 
-    public async Task<string> ExecutingCommand(string command, string[] args)
+    public Task ExecutingCommand(string command, string[] args, Action<string> writeLineOutput, Action<string> writeErrorOutput)
     {
-        var cmd = new Process();
-        cmd.StartInfo.FileName = $"{command}.exe";
-        cmd.StartInfo.CreateNoWindow = true;
-        cmd.StartInfo.UseShellExecute = false;
-        cmd.Start();
-        
-        string output = cmd.StandardOutput.ReadToEnd();
-        await cmd.WaitForExitAsync();
-        return output;
+        var proc = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = $"{command}.exe",
+                Arguments = string.Join(' ', args),
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            }
+        };
+
+        proc.Start();
+        while (!proc?.StandardOutput?.EndOfStream ?? true)
+        {
+            string line = proc?.StandardOutput?.ReadLine() ?? "";
+            writeLineOutput.Invoke(line);
+
+            string error = proc?.StandardError?.ReadLine() ?? "";
+            if (!string.IsNullOrWhiteSpace(error))
+                writeErrorOutput.Invoke(error);
+        }
+
+        return Task.CompletedTask;
     }
 
     public Task<IEnumerable<FileInfo>> GetTemplateFilesFromDirectory(string directory, CancellationToken cancellationToken)

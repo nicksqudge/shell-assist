@@ -1,3 +1,4 @@
+using System.Data;
 using DotnetCQRS;
 using DotnetCQRS.Commands;
 using FluentValidation;
@@ -36,18 +37,24 @@ public class RunCommandHandler : ICommandHandler<RunCommand>
         var shellLoader = new ShellTemplateLoader(_versionStore.FetchAllVersions());
         string contents = await _operatingSystem.ReadCommandFile(commandFile, cancellationToken);
         var commandTemplateType = shellLoader.LoadTemplate(contents);
-        
+
         if (commandTemplateType == null)
+        {
             _console.WriteError(_localisationHandler.InvalidCommandFile());
+            return Result.Failure("InvalidCommandFile");
+        }
 
         var handlerType = typeof(IShellCommandHandler<>).MakeGenericType(new Type[] { commandTemplateType });
         dynamic handler = _services.GetRequiredService(handlerType);
-        
+
         if (handler == null)
+        {
             _console.WriteError(_localisationHandler.InvalidCommandTemplateVersion());
+            return Result.Failure("InvalidHandler");
+        }
 
         await handler.Execute(commandFile, cancellationToken);
-        
+
         return Result.Success();
     }
 }

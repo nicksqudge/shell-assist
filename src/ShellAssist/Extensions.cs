@@ -1,7 +1,6 @@
 using System.CommandLine.Invocation;
 using DotnetCQRS.Commands;
 using Microsoft.Extensions.DependencyInjection;
-using ShellAssist.Core.API;
 
 namespace ShellAssist;
 

@@ -2,7 +2,7 @@ namespace ShellAssist.Core.ShellCommands.Versions;
 
 public class Version1ShellCommandTemplate : IShellCommandTemplate
 {
-    public ICollection<SingleCommand> Commands { get; set; }
+    public ICollection<SingleCommand> Commands { get; set; } = new List<SingleCommand>();
 
     public class SingleCommand
     {

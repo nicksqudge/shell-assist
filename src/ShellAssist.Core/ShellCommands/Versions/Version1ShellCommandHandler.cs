@@ -10,8 +10,8 @@ public class Version1ShellCommandHandler : IShellCommandHandler<Version1ShellCom
     private readonly IOperatingSystem _operatingSystem;
 
     public Version1ShellCommandHandler(
-        IConsole console, 
-        ILocalisationHandler localisationHandler, 
+        IConsole console,
+        ILocalisationHandler localisationHandler,
         IOperatingSystem operatingSystem)
     {
         _console = console;
@@ -31,11 +31,17 @@ public class Version1ShellCommandHandler : IShellCommandHandler<Version1ShellCom
 
             foreach (var command in commandData.Command.Commands)
             {
-                _localisationHandler.ExecutingCommand(command.Start, command.Args);
-                string output = await _operatingSystem.ExecutingCommand(command.Start, command.Args);
-                _console.WriteLine(output);
+                _console.WriteInfo(_localisationHandler.ExecutingCommand(command.Start, command.Args));
+                _console.NewLine();
+
+                await _operatingSystem.ExecutingCommand(
+                    command.Start, command.Args,
+                    (line) => _console.WriteLine(line),
+                    (error) => _console.WriteError(error)
+                );
+                _console.NewLine();
             }
-            
+
             return 0;
         }
         catch (Exception e)
@@ -44,18 +50,18 @@ public class Version1ShellCommandHandler : IShellCommandHandler<Version1ShellCom
             return 1;
         }
     }
-    
+
     private void ValidateCommandData(CommandFileJson<Version1ShellCommandTemplate> commandData)
     {
         if (commandData == null)
             throw new Exception(_localisationHandler.InvalidCommandFile());
-        
+
         if (commandData.Command == null)
             throw new Exception(_localisationHandler.InvalidCommandFile());
-        
+
         if (commandData.Command.Commands == null)
             throw new Exception(_localisationHandler.InvalidCommandFile());
-        
+
         if (commandData.Command.Commands.Any() == false)
             throw new Exception(_localisationHandler.InvalidCommandFile());
     }
