@@ -74,7 +74,7 @@ public class Windows : IOperatingSystem
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = $"{command}.exe",
+                FileName = command,
                 Arguments = string.Join(' ', args),
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
