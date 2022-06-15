@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellAssist.Tests", "tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellAssist", "src\ShellAssist\ShellAssist.csproj", "{293F70C8-420F-4CEA-B88D-0E498831B973}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellAssist.Core", "src\ShellAssist.Core\ShellAssist.Core.csproj", "{F3AB606F-507E-4088-AAB1-1D1E4DBEBCC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellAssist.Core", "src\ShellAssist.Core\ShellAssist.Core.csproj", "{F3AB606F-507E-4088-AAB1-1D1E4DBEBCC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
